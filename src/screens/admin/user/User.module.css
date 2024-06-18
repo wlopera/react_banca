@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    background-color: greenyellow;
+    font-size: 30;
+    font-weight: bold;
+    margin: 10px;
+    width: 90%;
+    border: 1px solid black;
+}
+
+.success {
+    background-color: #D1E7DD;
+    color: black;
+    font-weight: 700;
+    font-size: 16;
+}
+
+.error {
+    background-color: #F8D7DA;
+    color: black;
+    font-weight: 500;
+    font-size: 16;
+    width: 90%;
+    border: 1px solid black;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+

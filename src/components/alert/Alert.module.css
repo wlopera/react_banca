@@ -1,0 +1,24 @@
+.container {
+    color: white;
+    font-size: 18;
+    font-weight: 500;
+    border: 1px solid black;
+    margin-bottom: 2px;
+    text-align: left;
+    width: 90%;    
+}
+
+.success {
+    background-color: #198754;
+    padding: 6px;
+}
+
+.info {
+    background-color: #0D6EFD;
+    padding: 6px;
+}
+
+.error {
+    background-color: #DC3545;
+    padding: 6px;
+}
