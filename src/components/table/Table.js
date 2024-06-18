@@ -1,7 +1,30 @@
 import React from "react";
 import styles from "./Table.module.css";
 
-const Table = ({ columns, data, btnLabel = null, btnAction = null }) => {
+const Table = ({
+  columns,
+  data,
+  btnEnabledLabel = null,
+  btnEnabledAction = null,
+  btnTypeLabel = null,
+  btnTypeAction = null,
+}) => {
+  const getValueType = (type) => {
+    switch (type) {
+      case "admin":
+        return "Administrador";
+
+      case "bankteller":
+        return "Cajero";
+
+      case "client":
+        return "Cliente";
+
+      default:
+        return "Cliente";
+    }
+  };
+
   return (
     <table className={styles.table}>
       <thead>
@@ -20,12 +43,21 @@ const Table = ({ columns, data, btnLabel = null, btnAction = null }) => {
               <td>{item.login}</td>
               <td>**********</td>
               <td>{item.enabled ? "Si" : "No"}</td>
+              <td>{getValueType(item.type)}</td>
               <td>
                 <button
-                  onClick={() => btnAction(item)}
+                  onClick={() => btnEnabledAction(item)}
                   className={styles.btnAction}
                 >
-                  {btnLabel}
+                  {btnEnabledLabel}
+                </button>
+              </td>
+              <td>
+                <button
+                  onClick={() => btnTypeAction(item)}
+                  className={styles.btnAction}
+                >
+                  {btnTypeLabel}
                 </button>
               </td>
             </tr>

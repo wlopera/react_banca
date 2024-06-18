@@ -10,3 +10,7 @@ export const getUsers = async () => {
 export const setEnabled = async (data) => {
   return await axios.put(`${baseURL}/enabled`, data);
 };
+
+export const setType = async (data) => {
+  return await axios.put(`${baseURL}/type`, data);
+};

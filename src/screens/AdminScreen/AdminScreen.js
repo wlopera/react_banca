@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Menu from "../../components/menu/";
-import User from "../admin/user";
+import Menu from "../../components/menu";
+import User from "../admin/User";
 import Account from "../admin/Account";
 
 import { administrators } from "../../data/data";
-import styles from "./HomeScreen.module.css";
+import styles from "./AdminScreen.module.css";
 
-const HomeScreen = () => {
+const AdminScreen = () => {
   const [selectedOption, setSelectedOption] = useState("/admin/user");
   const data = administrators;
 
@@ -37,4 +37,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default AdminScreen;

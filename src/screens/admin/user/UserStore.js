@@ -1,4 +1,4 @@
-import { getUsers, setEnabled } from "../../../services/Userservice";
+import { getUsers, setEnabled, setType } from "../../../services/Userservice";
 
 export const getUserData = async (setUsers) => {
   try {
@@ -29,10 +29,28 @@ export const enableUser = async (item) => {
       return `[${response.status}]: Usuario actualizado - ${item.login}`;
     }
 
-    console.error("Error activando usuario", response);
+    console.error("Error activando usuario", response.data);
     throw new Error(`[${response.status}]: Error activando usuario`);
   } catch (error) {
-    console.error("Error activando usuario:", error);
+    console.error("Error activando usuario:", error.response.data);
     throw new Error(`[${error.response.status}]: Error activando usuario`);
+  }
+};
+
+export const typeUser = async (item) => {
+  try {
+    const response = await setType({ ...item, type: item.type });
+
+    if (response.status === 200) {
+      return `[${response.status}]: Usuario actualizado - ${item.login}`;
+    }
+
+    console.error("Error activando usuario", response.data);
+    throw new Error(`[${response.status}]: Error actualizando tipo de usuario`);
+  } catch (error) {
+    console.error("Error activando usuario:", error.response.data);
+    throw new Error(
+      `[${error.response.status}]: Error actualizando tipo de usuario`
+    );
   }
 };

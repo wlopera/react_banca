@@ -1,10 +1,10 @@
 import "./App.css";
-import HomeScreen from "./screens/HomeScreen";
+import AdminScreen from "./screens/AdminScreen";
 
 function App() {
   return (
     <div className="App">
-      <HomeScreen />
+      <AdminScreen />
     </div>
   );
 }
