@@ -1,10 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
-
 import Table from "../../../components/table/Table";
 import Alert from "../../../components/alert/Alert";
 import { enableUser, getUserData, typeUser } from "./UserStore";
 import GenericModal from "../../../components/modal";
-
 import styles from "./User.module.css";
 
 const columns = [
@@ -127,18 +125,19 @@ const User = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>Usuarios</div>
-      {message?.text && <Alert message={message} />}
-      <Table
-        columns={columns}
-        data={users}
-        btnEnabledLabel="Activar/Desactivar"
-        btnEnabledAction={handleChangeEnabled}
-        btnTypeLabel="Modificar"
-        btnTypeAction={handleTypeUser}
-      />
-      {modal}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.title}>Usuarios</div>
+        <Table
+          columns={columns}
+          data={users}
+          btnEnabledLabel="Activar/Desactivar"
+          btnEnabledAction={handleChangeEnabled}
+          btnTypeLabel="Modificar"
+          btnTypeAction={handleTypeUser}
+        />
+        {modal}
+      </div>
     </div>
   );
 };
