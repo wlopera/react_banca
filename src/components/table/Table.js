@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Table.module.css";
+import { getValueType } from "../../utils/Utils";
 
 const Table = ({
   columns,
@@ -9,22 +10,6 @@ const Table = ({
   btnTypeLabel = null,
   btnTypeAction = null,
 }) => {
-  const getValueType = (type) => {
-    switch (type) {
-      case "admin":
-        return "Administrador";
-
-      case "bankteller":
-        return "Cajero";
-
-      case "client":
-        return "Cliente";
-
-      default:
-        return "Cliente";
-    }
-  };
-
   return (
     <table className={styles.table}>
       <thead>

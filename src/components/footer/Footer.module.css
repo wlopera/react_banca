@@ -21,6 +21,21 @@
 .message {
     flex: 1;
     padding-left: 10px;
-    text-align: left;
-    
+    text-align: left;   
+}
+
+.success {
+    background-color: #198754;
+}
+
+.info {
+    background-color: #0D6EFD;
+}
+
+.error {
+    background-color: #DC3545;
+}
+
+.default {
+    background-color: 343a40;
 }

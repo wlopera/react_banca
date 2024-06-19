@@ -7,15 +7,13 @@ import { administrators } from "../../data/data";
 import Header from "../../components/header";
 import Body from "../../components/body";
 import Footer from "../../components/footer";
+import { observer } from "mobx-react";
+import store from "../../store/store";
 
 import styles from "./AdminScreen.module.css";
 
 const AdminScreen = () => {
   const [selectedOption, setSelectedOption] = useState("/admin/user");
-  const [messages, setMessages] = useState([
-    { text: "Mensaje al usuario", type: "ERROR" },
-    { text: "Mensaje del sistema", type: "ERROR" },
-  ]);
   const data = administrators;
 
   const getContext = () => {
@@ -45,9 +43,9 @@ const AdminScreen = () => {
           <div className={styles.body}>{getContext()}</div>
         </Body>
       </div>
-      <Footer messages={messages} />
+      <Footer messages={store.messages} />
     </div>
   );
 };
 
-export default AdminScreen;
+export default observer(AdminScreen);
