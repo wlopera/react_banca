@@ -1,29 +1,12 @@
-.container {
-    display: flex;
-    flex-direction: row;
-    margin-left: 40px;
-    margin-top: 20px;
-    width: 95vw;  /* Ocupa toda la anchura de la ventana */
-    height: 95vh; /* Ocupa toda la altura de la ventana */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.menu {
-    flex: 1;
-    background-color: "#FFF";
-    border: 2px solid greenyellow;
-}
-.menu:hover {
-    flex: 1;
-    border: 2px solid rgb(186, 255, 83)
-    /* background-color: rgb(186, 255, 83) */
-}
-
-.body {
-    flex: 4;
-    background-color: aqua;
-}
-
-.body:hover {
-    flex: 4;
-    background-color: rgb(106, 255, 255);
+.mainWrapper {
+  display: flex;
+  flex: 1;
+  overflow-y: auto; /* Hace que el scroll sea solo para el contenido */
+  padding-top: 36px;
 }

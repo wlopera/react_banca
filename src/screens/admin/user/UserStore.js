@@ -1,4 +1,5 @@
 import { getUsers, setEnabled, setType } from "../../../services/Userservice";
+import { getValueType } from "../../../utils/Utils";
 
 export const getUserData = async (setUsers) => {
   try {
@@ -12,28 +13,29 @@ export const getUserData = async (setUsers) => {
       setUsers(response.data);
       return null;
     }
-
-    console.error("Error consultando usuarios", response);
-    throw new Error(`[${response.status}]: Error consultando usuarios`);
+    throw createError("Error consultando usuarios:", response);
   } catch (error) {
-    console.error("Error consultando usuarios:", error);
-    throw new Error(`[${error.response.status}]: Error consultando usuarios`);
+    throw createError(
+      "Error consultando usuarios",
+      `[${error.response.status}]: ${error?.response?.data?.detail?.error}`
+    );
   }
 };
 
 export const enableUser = async (item) => {
   try {
     const response = await setEnabled({ ...item, enabled: !item.enabled });
-
     if (response.status === 200) {
-      return `[${response.status}]: Usuario actualizado - ${item.login}`;
+      return `[ ${item.login} ]: Cambio el estado -> ${
+        !item.enabled ? "Activo" : "Inactivo"
+      }`;
     }
-
-    console.error("Error activando usuario", response.data);
-    throw new Error(`[${response.status}]: Error activando usuario`);
+    throw createError("Error activando usuario:", response);
   } catch (error) {
-    console.error("Error activando usuario:", error.response.data);
-    throw new Error(`[${error.response.status}]: Error activando usuario`);
+    throw createError(
+      "Error activando usuario",
+      `[${error.response.status}]: ${error?.response?.data?.detail?.error}`
+    );
   }
 };
 
@@ -42,15 +44,21 @@ export const typeUser = async (item) => {
     const response = await setType({ ...item, type: item.type });
 
     if (response.status === 200) {
-      return `[${response.status}]: Usuario actualizado - ${item.login}`;
+      return `[ ${item.login} ]: Cambio el tipo de usuario -> ${getValueType(
+        item.type
+      )}`;
     }
 
-    console.error("Error activando usuario", response.data);
-    throw new Error(`[${response.status}]: Error actualizando tipo de usuario`);
+    throw createError("Error cambiando el tipo de usuario:", response);
   } catch (error) {
-    console.error("Error activando usuario:", error.response.data);
-    throw new Error(
-      `[${error.response.status}]: Error actualizando tipo de usuario`
+    throw createError(
+      "Error cambiando el tipo de usuario",
+      `[${error.response.status}]: ${error?.response?.data?.detail?.error}`
     );
   }
+};
+
+const createError = (msgUser, msgSys) => {
+  console.error(`${msgUser}: ${msgSys}`);
+  return new Error(JSON.stringify([msgUser, msgSys]));
 };

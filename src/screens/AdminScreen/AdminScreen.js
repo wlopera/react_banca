@@ -4,6 +4,12 @@ import User from "../admin/User";
 import Account from "../admin/Account";
 
 import { administrators } from "../../data/data";
+import Header from "../../components/header";
+import Body from "../../components/body";
+import Footer from "../../components/footer";
+import { observer } from "mobx-react";
+import store from "../../store/store";
+
 import styles from "./AdminScreen.module.css";
 
 const AdminScreen = () => {
@@ -22,19 +28,24 @@ const AdminScreen = () => {
         break;
     }
   };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.menu}>
+    <div className={styles.page}>
+      <Header />
+      <div className={styles.mainWrapper}>
         <Menu
           title="Administrador Bancario"
           data={data}
           onSelected={setSelectedOption}
           selectedOption={selectedOption}
         />
+        <Body>
+          <div className={styles.body}>{getContext()}</div>
+        </Body>
       </div>
-      <div className={styles.body}>{getContext()}</div>
+      <Footer messages={store.messages} />
     </div>
   );
 };
 
-export default AdminScreen;
+export default observer(AdminScreen);

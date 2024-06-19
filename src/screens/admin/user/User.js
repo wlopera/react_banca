@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import Table from "../../../components/table/Table";
-import Alert from "../../../components/alert/Alert";
 import { enableUser, getUserData, typeUser } from "./UserStore";
+import Table from "../../../components/table/Table";
 import GenericModal from "../../../components/modal";
+import { observer } from "mobx-react";
+import store from "../../../store/store";
 
 import styles from "./User.module.css";
 
@@ -20,64 +21,67 @@ const columns = [
 const User = () => {
   const [users, setUsers] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
-  const [message, setMessage] = useState({ text: null, type: "SUCCESS" });
+  const [cmbType, setCmbType] = useState(null);
   const [show, setShow] = useState(false);
-
-  const setAlert = useCallback((text, type) => {
-    setMessage({
-      text,
-      type,
-    });
-  }, []);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        setAlert(null, "SUCCESS");
-
+        store.initMessages();
         const response = await getUserData(setUsers);
         if (response) {
-          setAlert(response, "INFO");
+          store.setMessages([{ text: response, type: "INFO" }, {}]);
         }
       } catch (error) {
-        setAlert(error.message, "ERROR");
+        const err = JSON.parse(error.message);
+        store.setMessages([
+          { text: err?.[0], type: "ERROR" },
+          { text: err?.[1], type: "ERROR" },
+        ]);
       }
     };
 
     getData();
-  }, [setUsers, setAlert]);
+  }, [setUsers]);
 
   const handleChangeEnabled = async (item) => {
     try {
-      setAlert(null, "SUCCESS");
-
+      store.initMessages();
       const response = await enableUser(item);
       if (response) {
-        setAlert(response, "INFO");
-        await getUserData(setUsers, setAlert);
+        store.setMessages([{ text: response, type: "INFO" }, {}]);
+        await getUserData(setUsers);
       }
     } catch (error) {
-      setAlert(error.message, "ERROR");
+      const err = JSON.parse(error.message);
+      store.setMessages([
+        { text: err?.[0], type: "ERROR" },
+        { text: err?.[1], type: "ERROR" },
+      ]);
     }
   };
 
   const handleTypeUser = (user) => {
+    store.initMessages();
     setCurrentUser(user);
     setShow(true);
+    setCmbType(user.type);
   };
 
   const handleProcess = async () => {
     try {
-      setAlert(null, "SUCCESS");
-
       const response = await typeUser(currentUser);
       if (response) {
-        setAlert(response, "INFO");
-        await getUserData(setUsers, setAlert);
+        store.setMessages([{ text: response, type: "INFO" }, {}]);
+        await getUserData(setUsers);
       }
       setShow(false);
     } catch (error) {
-      setAlert(error.message, "ERROR");
+      const err = JSON.parse(error.message);
+      store.setMessages([
+        { text: err?.[0], type: "ERROR" },
+        { text: err?.[1], type: "ERROR" },
+      ]);
       setShow(false);
     }
   };
@@ -110,14 +114,17 @@ const User = () => {
           </div>
         </div>
         <div className={styles.buttons}>
-          <button
-            onClick={() => {
-              handleProcess();
-            }}
-            className={styles.btnProcess}
-          >
-            Procesar
-          </button>
+          {cmbType && cmbType !== currentUser.type && (
+            <button
+              onClick={() => {
+                handleProcess();
+              }}
+              className={styles.btnProcess}
+            >
+              Procesar
+            </button>
+          )}
+
           <button onClick={() => setShow(false)} className={styles.btnCancel}>
             Cancelar
           </button>
@@ -127,20 +134,21 @@ const User = () => {
   );
 
   return (
-    <div className={styles.container}>
-      <div className={styles.title}>Usuarios</div>
-      {message?.text && <Alert message={message} />}
-      <Table
-        columns={columns}
-        data={users}
-        btnEnabledLabel="Activar/Desactivar"
-        btnEnabledAction={handleChangeEnabled}
-        btnTypeLabel="Modificar"
-        btnTypeAction={handleTypeUser}
-      />
-      {modal}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.title}>Usuarios</div>
+        <Table
+          columns={columns}
+          data={users}
+          btnEnabledLabel="Activar/Desactivar"
+          btnEnabledAction={handleChangeEnabled}
+          btnTypeLabel="Modificar"
+          btnTypeAction={handleTypeUser}
+        />
+        {modal}
+      </div>
     </div>
   );
 };
 
-export default User;
+export default observer(User);

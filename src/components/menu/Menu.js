@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Menu.module.css";
 
-const MenuScreen = ({ title, data, onSelected, selectedOption }) => {
+const Menu = ({ title, data, onSelected, selectedOption }) => {
   return (
-    <div className={styles.container}>
+    <div className={styles.menu}>
       <div className={styles.title}>{title}</div>
       <ul>
         {data &&
@@ -25,4 +25,4 @@ const MenuScreen = ({ title, data, onSelected, selectedOption }) => {
   );
 };
 
-export default MenuScreen;
+export default Menu;
