@@ -1,5 +1,5 @@
 import { getUsers, setEnabled, setType } from "../../../services/Userservice";
-import { getValueType } from "../../../utils/Utils";
+import { getValueType, getTypeByLabel } from "../../../utils/Utils";
 
 export const getUserData = async (setUsers) => {
   try {
@@ -10,7 +10,14 @@ export const getUserData = async (setUsers) => {
         return "No existen datos de usuarios, actualmente...";
       }
 
-      setUsers(response.data);
+      let users = response.data;
+      users = users.map((user) => {
+        user.enabled = user.enabled === 1 ? "Si" : "No";
+        user.type = getValueType(user.type);
+        return user;
+      });
+
+      setUsers(users);
       return null;
     }
     throw createError("Error consultando usuarios:", response);
@@ -24,7 +31,13 @@ export const getUserData = async (setUsers) => {
 
 export const enableUser = async (item) => {
   try {
-    const response = await setEnabled({ ...item, enabled: !item.enabled });
+    const enabled = item.enabled === "Si" ? 0 : 1;
+    const type = getTypeByLabel(item.type);
+    const response = await setEnabled({
+      ...item,
+      enabled: enabled,
+      type: type,
+    });
     if (response.status === 200) {
       return `[ ${item.login} ]: Cambio el estado -> ${
         !item.enabled ? "Activo" : "Inactivo"
@@ -41,7 +54,9 @@ export const enableUser = async (item) => {
 
 export const typeUser = async (item) => {
   try {
-    const response = await setType({ ...item, type: item.type });
+    const enabled = item.enabled === "Si" ? 0 : 1;
+    const type = getTypeByLabel(item.type);
+    const response = await setType({ ...item, enabled: enabled, type: type });
 
     if (response.status === 200) {
       return `[ ${item.login} ]: Cambio el tipo de usuario -> ${getValueType(

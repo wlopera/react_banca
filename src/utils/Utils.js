@@ -13,3 +13,19 @@ export const getValueType = (type) => {
       return "Cliente";
   }
 };
+
+export const getTypeByLabel = (label) => {
+  switch (label) {
+    case "Administrador":
+      return "admin";
+
+    case "Cajero":
+      return "bankteller";
+
+    case "Cliente":
+      return "client";
+
+    default:
+      return "client";
+  }
+};

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Menu from "../../components/menu";
 import User from "../admin/User";
+import Client from "../admin/Client";
 import Account from "../admin/Account";
 
 import { administrators } from "../../data/data";
@@ -20,6 +21,9 @@ const AdminScreen = () => {
     switch (selectedOption) {
       case "/admin/user":
         return <User />;
+
+      case "/admin/client":
+        return <Client />;
 
       case "/admin/account":
         return <Account />;

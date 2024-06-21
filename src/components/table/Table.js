@@ -1,50 +1,45 @@
 import React from "react";
 import styles from "./Table.module.css";
-import { getValueType } from "../../utils/Utils";
 
-const Table = ({
-  columns,
-  data,
-  btnEnabledLabel = null,
-  btnEnabledAction = null,
-  btnTypeLabel = null,
-  btnTypeAction = null,
-}) => {
+const Table = ({ columns, rows, columnsAction = null, actions = null }) => {
   return (
     <table className={styles.table}>
       <thead>
         <tr>
           {columns &&
-            columns.map((item, index) => (
-              <th key={`${item}-${index}`}>{item}</th>
+            columns.map((column, index) =>
+              column.show ? (
+                <th key={`${column.accesor} -${index}`}>{column.header}</th>
+              ) : null
+            )}
+          {columnsAction &&
+            columnsAction.map((column, index) => (
+              <th key={`${column} -${index}`}>{column}</th>
             ))}
         </tr>
       </thead>
       <tbody>
-        {data &&
-          data.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.login}</td>
-              <td>**********</td>
-              <td>{item.enabled ? "Si" : "No"}</td>
-              <td>{getValueType(item.type)}</td>
-              <td>
-                <button
-                  onClick={() => btnEnabledAction(item)}
-                  className={styles.btnAction}
-                >
-                  {btnEnabledLabel}
-                </button>
-              </td>
-              <td>
-                <button
-                  onClick={() => btnTypeAction(item)}
-                  className={styles.btnAction}
-                >
-                  {btnTypeLabel}
-                </button>
-              </td>
+        {rows &&
+          rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {columns.map((column) =>
+                column.show ? (
+                  <td key={column.accessor}>{row[column.accessor]}</td>
+                ) : null
+              )}
+              {actions &&
+                actions.map((btn, index) => (
+                  <td key={`${btn.label} -${index}`}>
+                    <button
+                      onClick={() => {
+                        btn.onClick(row);
+                      }}
+                      className={styles.btnAction}
+                    >
+                      {btn.label}
+                    </button>
+                  </td>
+                ))}
             </tr>
           ))}
       </tbody>

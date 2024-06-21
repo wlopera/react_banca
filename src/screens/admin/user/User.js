@@ -9,13 +9,11 @@ import store from "../../../store/store";
 import styles from "./User.module.css";
 
 const columns = [
-  "ID",
-  "Usuario",
-  "Contraseña",
-  "Activo",
-  "Tipo",
-  "Activar Usuario",
-  "Tipo de Usuario",
+  { header: "ID", accessor: "id", show: true },
+  { header: "USUARIO", accessor: "login", show: true },
+  { header: "CONTRASEÑA", accessor: "password", show: true },
+  { header: "ACTIVO", accessor: "enabled", show: true },
+  { header: "TIPO", accessor: "type", show: true },
 ];
 
 const User = () => {
@@ -100,16 +98,16 @@ const User = () => {
               name="select"
               className={styles.select}
               value={currentUser.type}
-              onChange={(item) =>
-                setCurrentUser((prevUser) => ({
+              onChange={(item) => {
+                return setCurrentUser((prevUser) => ({
                   ...prevUser,
                   type: item.target.value,
-                }))
-              }
+                }));
+              }}
             >
-              <option value="admin">Administrador</option>
-              <option value="bankteller">Cajero</option>
-              <option value="client">Cliente</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Cajero">Cajero</option>
+              <option value="Cliente">Cliente</option>
             </select>
           </div>
         </div>
@@ -139,11 +137,12 @@ const User = () => {
         <div className={styles.title}>Usuarios</div>
         <Table
           columns={columns}
-          data={users}
-          btnEnabledLabel="Activar/Desactivar"
-          btnEnabledAction={handleChangeEnabled}
-          btnTypeLabel="Modificar"
-          btnTypeAction={handleTypeUser}
+          rows={users}
+          columnsAction={["Activar usuario", "Tipo de UsUario"]}
+          actions={[
+            { label: "Activar/Desactivar", onClick: handleChangeEnabled },
+            { label: "Modificar", onClick: handleTypeUser },
+          ]}
         />
         {modal}
       </div>
